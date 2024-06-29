@@ -25,7 +25,7 @@
                 <option :value="false">否</option>
               </select>
             </div>
-            <div class="form-group">
+            <div class="form-group" v-if="isEditMode">
               <label for="admin_enabled">管理員</label>
               <select class="form-control" id="admin_enabled" v-model="user.admin_enabled" :disabled="viewMode" required>
                 <option :value="true">是</option>
