@@ -1,12 +1,12 @@
 <template>
   <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">管理者管理</h1>
+    <h1 class="h3 mb-2 text-gray-800">最高管理者</h1>
 
     <div class="card-body">
-      <button class="btn btn-primary">
+      <button class="btn btn-primary" @click="addUser">
         <font-awesome-icon icon="circle-plus" /> 新增
       </button>
-      <button class="btn btn-secondary">
+      <button class="btn btn-secondary" @click="deleteSelectedUsers">
         <font-awesome-icon icon="trash-can" /> 刪除
       </button>
       <button class="btn btn-info">
@@ -66,8 +66,10 @@
         v-if="showUserModal"
         :userId="selectedUserId"
         :isEditMode="isEditMode"
+        :viewMode="viewMode"
         @close="showUserModal = false"
         @user-updated="fetchUsers()"
+        @user-added="fetchUsers()"
       />
     </div>
   </div>
@@ -95,7 +97,8 @@ export default {
       },
       showUserModal: false,
       selectedUserId: null,
-      isEditMode: false
+      isEditMode: false,
+      viewMode: false
     };
   },
   created() {
@@ -118,7 +121,10 @@ export default {
       this.fetchUsers(url);
     },
     addUser() {
-      // Logic to add a new user
+      this.selectedUserId = null;
+      this.isEditMode = false;
+      this.viewMode = false;
+      this.showUserModal = true;
     },
     deleteSelectedUsers() {
       if (this.selectedUsers.length === 0) {
@@ -126,26 +132,30 @@ export default {
         return;
       }
 
-      this.selectedUsers.forEach((userId) => {
-        axios.delete(`/adminUsers/${userId}`)
-          .then(() => {
-            this.users = this.users.filter((user) => user.id !== userId);
-          })
-          .catch((error) => {
-            console.error("Error deleting user:", error);
-          });
+      const deletePromises = this.selectedUsers.map((userId) => {
+        return axios.delete(`/adminUsers/${userId}`);
       });
 
-      this.selectedUsers = [];
+      Promise.all(deletePromises)
+        .then(() => {
+          this.selectedUsers = [];
+          this.fetchUsers();
+          alert("用戶刪除成功");
+        })
+        .catch((error) => {
+          console.error("Error deleting users:", error);
+        });
     },
     viewUser(userId) {
       this.selectedUserId = userId;
       this.isEditMode = false;
+      this.viewMode = true;
       this.showUserModal = true;
     },
     editUser(userId) {
       this.selectedUserId = userId;
       this.isEditMode = true;
+      this.viewMode = false;
       this.showUserModal = true;
     }
   },

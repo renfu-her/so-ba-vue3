@@ -44,13 +44,13 @@
 
       <li class="nav-item">
         <a class="nav-link" href="/adminUsers">
-          <span>一般管理者</span>
+          <span>最高管理者</span>
         </a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="/users">
-          <span>最高管理者</span>
+          <span>一般管理者</span>
         </a>
       </li>
 
