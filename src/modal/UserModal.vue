@@ -1,6 +1,6 @@
 <template>
   <div class="modal" tabindex="-1" role="dialog" style="display: block;">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{{ isEditMode ? '編輯用戶' : (viewMode ? '查看用戶' : '新增用戶') }}</h5>

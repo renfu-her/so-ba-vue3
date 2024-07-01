@@ -78,7 +78,7 @@
 <script>
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import UserModal from './UserModal.vue';
+import UserModal from '../modal/UserModal.vue';
 
 export default {
   components: {

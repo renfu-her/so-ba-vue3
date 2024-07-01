@@ -19,15 +19,15 @@
       <hr class="sidebar-divider" />
 
       <div class="sidebar-heading margin-menu">
-        <a href="/backend/members" class="left-menu"> 客戶管理 </a>
+        <a href="/members" class="left-menu"> 客戶管理 </a>
       </div>
 
       <div class="sidebar-heading margin-menu">
-        <a class="left-menu" href="/backend/orders"> 訂單管理 </a>
+        <a class="left-menu" href="/orders"> 訂單管理 </a>
       </div>
 
       <div class="sidebar-heading margin-menu">
-        <a class="left-menu" href="/backend/product">
+        <a class="left-menu" href="/products">
           庫存管理
           <span
             id="warning_product"
@@ -106,7 +106,7 @@
                 class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="userDropdown"
               >
-                <a class="dropdown-item" href="/backend/logout">
+                <a class="dropdown-item" href="/logout">
                   <i
                     class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"
                   ></i>

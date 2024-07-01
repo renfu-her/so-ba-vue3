@@ -3,7 +3,9 @@ import App from './App.vue';
 import axios from 'axios';
 import { createRouter, createWebHistory } from 'vue-router';
 import UserManagement from './components/UsersManager.vue';
-import AdminUserManager from './components/AdminUserManager.vue'; // 假設你有另一個組件
+import AdminUserManager from './components/AdminUserManager.vue';
+import ProductManager from './components/ProductManager.vue';
+import MemberManager from './components/MemberManager.vue';
 
 // 全局設置 axios，以便在組件中使用
 axios.defaults.baseURL = 'https://so-ba-web.test/api';
@@ -31,6 +33,16 @@ const routes = [
     name: 'AdminUserManager',
     component: AdminUserManager,
   },
+  {
+    path: '/products',
+    name: 'ProductManager',
+    component: ProductManager,
+  },
+  {
+    path: '/members',
+    name: 'MemberManager',
+    component: MemberManager,
+  }
 ];
 
 const router = createRouter({
