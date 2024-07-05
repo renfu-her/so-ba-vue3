@@ -55,13 +55,14 @@
                 id="phone"
                 v-model="member.phone"
                 :disabled="viewMode"
-                required
               />
             </div>
             <!-- 添加其他欄位 -->
-            <button type="submit" class="btn btn-primary" v-if="!viewMode">
-              {{ isEditMode ? "保存" : "新增" }}
-            </button>
+            <div class="button-container">
+              <button type="submit" class="btn btn-primary" v-if="!viewMode">
+                {{ isEditMode ? "保存" : "新增" }}
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -72,9 +73,7 @@
 <script>
 import axios from "axios";
 
-
 export default {
-  
   props: {
     memberId: {
       type: Number,
@@ -96,10 +95,10 @@ export default {
         name: "",
         sex: true,
         mobile: "",
-        phone: '',
-        county: '',
-        district: '',
-        zipcode: ''
+        phone: "",
+        county: "",
+        district: "",
+        zipcode: "",
       },
     };
   },
@@ -152,5 +151,10 @@ export default {
 .modal {
   display: block;
   background: rgba(0, 0, 0, 0.5);
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 </style>
