@@ -2,10 +2,10 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import axios from 'axios';
 import { createRouter, createWebHistory } from 'vue-router';
-import UserManagement from './components/UsersManager.vue';
-import AdminUserManager from './components/AdminUserManager.vue';
-import ProductManager from './components/ProductManager.vue';
-import MemberManager from './components/MemberManager.vue';
+import UserManagement from './components/manager/UsersManager.vue';
+import AdminUserManager from './components/manager/AdminUserManager.vue';
+import ProductManager from './components/manager/ProductManager.vue';
+import MemberManager from './components/manager/MemberManager.vue';
 
 // 全局設置 axios，以便在組件中使用
 axios.defaults.baseURL = 'https://so-ba-web.test/api';

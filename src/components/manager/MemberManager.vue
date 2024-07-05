@@ -50,24 +50,11 @@
         </table>
       </div>
       <!-- 分頁按鈕 -->
-      <nav aria-label="Page navigation">
-        <ul class="pagination">
-          <li class="page-item" :class="{ disabled: !members.prev_page_url }">
-            <a class="page-link" href="#" @click.prevent="fetchMembers(members.prev_page_url)">&laquo; 上一頁</a>
-          </li>
-          <li
-            class="page-item"
-            v-for="page in visiblePages"
-            :key="page"
-            :class="{ active: page === members.current_page }"
-          >
-            <a class="page-link" href="#" @click.prevent="fetchMembersByPage(page)">{{ page }}</a>
-          </li>
-          <li class="page-item" :class="{ disabled: !members.next_page_url }">
-            <a class="page-link" href="#" @click.prevent="fetchMembers(members.next_page_url)">下一頁 &raquo;</a>
-          </li>
-        </ul>
-      </nav>
+      <PagePaginator
+        :current-page="members.current_page"
+        :total-pages="members.last_page"
+        @page-change="fetchMembersByPage"
+      />
       <!-- 查看/編輯成員的模態框 -->
       <MemberModal
         v-if="showMemberModal"
@@ -85,12 +72,14 @@
 <script>
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import MemberModal from '../modal/MemberModal.vue';
+import MemberModal from '../../modal/MemberModal.vue';
+import PagePaginator from "../PagePaginator.vue";
 
 export default {
   components: {
     FontAwesomeIcon,
-    MemberModal
+    MemberModal,
+    PagePaginator,
   },
   data() {
     return {
@@ -164,39 +153,6 @@ export default {
       this.showMemberModal = true;
     }
   },
-  computed: {
-    visiblePages() {
-      const pages = [];
-      const totalPages = this.members.last_page;
-      const currentPage = this.members.current_page;
-      const range = 2; // 當前頁碼前後顯示的頁碼數
-
-      // 確保頁碼不重複
-      if (currentPage > 1) {
-        pages.push(1);
-      }
-
-      if (currentPage > range + 2) {
-        pages.push('...');
-      }
-
-      for (let i = currentPage - range; i <= currentPage + range; i++) {
-        if (i > 1 && i < totalPages) {
-          pages.push(i);
-        }
-      }
-
-      if (currentPage < totalPages - range - 1) {
-        pages.push('...');
-      }
-
-      if (currentPage < totalPages) {
-        pages.push(totalPages);
-      }
-
-      return [...new Set(pages)];
-    }
-  }
 };
 </script>
 

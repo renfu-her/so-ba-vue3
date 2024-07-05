@@ -71,40 +71,12 @@
         </table>
       </div>
 
-      <!-- 分頁按鈕 -->
-      <nav aria-label="Page navigation">
-        <ul class="pagination">
-          <li class="page-item" :class="{ disabled: !products.prev_page_url }">
-            <a
-              class="page-link"
-              href="#"
-              @click.prevent="fetchProducts(products.prev_page_url)"
-              >&laquo; 上一頁</a
-            >
-          </li>
-          <li
-            class="page-item"
-            v-for="page in visiblePages"
-            :key="page"
-            :class="{ active: page === products.current_page }"
-          >
-            <a
-              class="page-link"
-              href="#"
-              @click.prevent="fetchProductsByPage(page)"
-              >{{ page }}</a
-            >
-          </li>
-          <li class="page-item" :class="{ disabled: !products.next_page_url }">
-            <a
-              class="page-link"
-              href="#"
-              @click.prevent="fetchProducts(products.next_page_url)"
-              >下一頁 &raquo;</a
-            >
-          </li>
-        </ul>
-      </nav>
+      <!-- 使用新的 PagePaginator 組件 -->
+      <PagePaginator
+        :current-page="products.current_page"
+        :total-pages="products.last_page"
+        @page-change="fetchProductsByPage"
+      />
 
       <!-- 查看/編輯/新增產品的模態框 -->
       <ProductModal
@@ -123,12 +95,14 @@
 <script>
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import ProductModal from "../modal/ProductModal.vue";
+import ProductModal from "../../modal/ProductModal.vue";
+import PagePaginator from "../PagePaginator.vue";
 
 export default {
   components: {
     FontAwesomeIcon,
     ProductModal,
+    PagePaginator,
   },
   data() {
     return {
@@ -202,39 +176,6 @@ export default {
       this.viewMode = false;
       this.showProductModal = true;
     },
-  },
-  computed: {
-    visiblePages() {
-      const pages = [];
-      const totalPages = this.products.last_page;
-      const currentPage = this.products.current_page;
-      const range = 2; // 當前頁碼前後顯示的頁碼數
-
-      // 確保頁碼不重複
-      if (currentPage > 1) {
-        pages.push(1);
-      }
-
-      if (currentPage > range + 2) {
-        pages.push('...');
-      }
-
-      for (let i = currentPage - range; i <= currentPage + range; i++) {
-        if (i > 1 && i < totalPages) {
-          pages.push(i);
-        }
-      }
-
-      if (currentPage < totalPages - range - 1) {
-        pages.push('...');
-      }
-
-      if (currentPage < totalPages) {
-        pages.push(totalPages);
-      }
-
-      return [...new Set(pages)];
-    }
   },
 };
 </script>

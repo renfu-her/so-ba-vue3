@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">一般使用者管理</h1>
+    <h1 class="h3 mb-2 text-gray-800">最高管理者</h1>
 
     <div class="card-body">
       <button class="btn btn-primary" @click="addUser">
@@ -48,19 +48,11 @@
         </table>
       </div>
       <!-- 分頁按鈕 -->
-      <nav aria-label="Page navigation">
-        <ul class="pagination">
-          <li class="page-item" :class="{ disabled: !pagination.prev_page_url }">
-            <a class="page-link" href="#" @click.prevent="fetchUsers(pagination.prev_page_url)">&laquo; 上一頁</a>
-          </li>
-          <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: page === pagination.current_page }">
-            <a class="page-link" href="#" @click.prevent="fetchUsersByPage(page)">{{ page }}</a>
-          </li>
-          <li class="page-item" :class="{ disabled: !pagination.next_page_url }">
-            <a class="page-link" href="#" @click.prevent="fetchUsers(pagination.next_page_url)">下一頁 &raquo;</a>
-          </li>
-        </ul>
-      </nav>
+      <PagePaginator
+        :current-page="users.current_page"
+        :total-pages="users.last_page"
+        @page-change="fetchUsersByPage"
+      />
       <!-- 查看/編輯用戶的模態框 -->
       <UserModal
         v-if="showUserModal"
@@ -78,12 +70,14 @@
 <script>
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import UserModal from '../modal/UserModal.vue';
+import UserModal from '../../modal/AdminUserModal.vue';
+import PagePaginator from "../PagePaginator.vue";
 
 export default {
   components: {
     FontAwesomeIcon,
-    UserModal
+    UserModal,
+    PagePaginator,
   },
   data() {
     return {
@@ -105,7 +99,7 @@ export default {
     this.fetchUsers();
   },
   methods: {
-    fetchUsers(url = "/users") {
+    fetchUsers(url = "/adminUsers") {
       axios.get(url)
         .then((response) => {
           const { data, current_page, last_page, prev_page_url, next_page_url } = response.data.data;
@@ -117,7 +111,7 @@ export default {
         });
     },
     fetchUsersByPage(page) {
-      const url = `/users?page=${page}`;
+      const url = `/adminUsers?page=${page}`;
       this.fetchUsers(url);
     },
     addUser() {
@@ -133,7 +127,7 @@ export default {
       }
 
       const deletePromises = this.selectedUsers.map((userId) => {
-        return axios.delete(`/users/${userId}`);
+        return axios.delete(`/adminUsers/${userId}`);
       });
 
       Promise.all(deletePromises)
@@ -159,11 +153,6 @@ export default {
       this.showUserModal = true;
     }
   },
-  computed: {
-    totalPages() {
-      return Array.from({ length: this.pagination.last_page }, (v, k) => k + 1);
-    }
-  }
 };
 </script>
 
